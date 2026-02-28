@@ -441,7 +441,7 @@ section {
 /* Tech stack */
 .stack-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
@@ -553,20 +553,6 @@ footer {
     <p class="hero-desc">
   K-POP 팬덤 플랫폼을 초기부터 설계·운영하며 글로벌 서비스를 직접 책임져온 11년 경력의 백엔드 엔지니어입니다.
     </p>
-    <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-value">400만</span>
-        <span class="stat-label">누적 다운로드</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">40만</span>
-        <span class="stat-label">MAU</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">11년</span>
-        <span class="stat-label">백엔드 경력</span>
-      </div>
-    </div>
   </div>
 
   <div class="divider"></div>
@@ -667,11 +653,11 @@ footer {
           🔧 트러블슈팅 – 블루그린 배포 시 IP pool 고갈
           <span class="feature-tag trouble">TROUBLESHOOTING</span>
         </div>
-        <div class="trouble-box">이벤트 대응을 위해 블루그린 배포를 진행하던 중, 신규 Pod가 대량으로 뜨면서 VPC 서브넷의 IP가 고갈되어 Pod 생성이 실패하는 문제가 발생했습니다.</div>
+        <div class="trouble-box">신규 기능 및 크론잡 추가로 Pod 수가 증가했고, 모니터링이 미흡해 서브넷 IP pool 한계를 인지하지 못한 채 고갈되어 Pod 생성이 실패하는 문제가 발생했습니다.</div>
         <ul class="feature-list">
-          <li>원인: 블루그린 방식 특성상 기존/신규 Pod 동시 존재 구간에서 IP 사용량 2배 증가, 서브넷 IP pool 한계 초과</li>
           <li>대응: 사용하지 않는 네임스페이스 Pod 정리 및 서브넷 CIDR 범위 확장으로 IP pool 확보</li>
-          <li>재발 방지: 블루그린 배포 전 IP 사용량 사전 점검 프로세스 추가, 여유 IP 모니터링 알림 설정</li>
+          <li>재발 방지: 신규 서비스 출시 전 IP 사용량 사전 점검 프로세스 추가, 여유 IP 모니터링 알림 설정</li>
+          <li>구조 개선: PostSync Hook을 활용해 초기에 최소 Pod만 띄우고 이후 점진적으로 증가시키는 방식으로 전환해 동시 IP 사용량 감소</li>
         </ul>
       </div>
 
@@ -683,7 +669,8 @@ footer {
         </div>
         <p class="feature-body">K-POP 팬덤 특성상 사용자가 전 세계에 분포해 초기부터 글로벌 서비스를 전제로 설계했습니다.</p>
         <ul class="feature-list">
-          <li>다국어: JSON 기반 번역 파일 관리, Accept-Language 헤더 기반 동적 언어 서빙 (한/영/일, 그 외 영어 폴백)</li>
+          <li>다국어: 한/영/일 다국어 콘텐츠 서빙, Accept-Language 헤더 기반 동적 언어 처리 (그 외 영어 폴백)</li>
+          <li>번역 API 연동으로 콘텐츠 자동 번역 처리, 초기 GCP Translation에서 비용 절감을 위해 Azure Translator로 전환, 콘텐츠별·언어별 캐싱으로 중복 번역 요청 최소화</li>
           <li>타임존: API 응답을 ISO 8601 UTC 기준으로 통일, 클라이언트에서 로컬 타임존 변환 처리</li>
           <li>글로벌 다수 국가 서비스 운영</li>
         </ul>
@@ -729,7 +716,7 @@ footer {
           🔧 트러블슈팅 – 이모지·특수문자 검색 누락
           <span class="feature-tag trouble">TROUBLESHOOTING</span>
         </div>
-        <div class="trouble-box">K-POP 특성상 아티스트명에 이모지·특수문자가 포함된 경우가 많은데, 형태소 분석기만으로는 토크나이징이 되지 않아 검색 결과가 누락되는 문제가 발생했습니다.</div>
+        <div class="trouble-box">유저 닉네임에 이모지·특수문자가 포함된 경우가 많은데, 형태소 분석기만으로는 토크나이징이 되지 않아 검색 결과가 누락되는 문제가 발생했습니다.</div>
         <ul class="feature-list">
           <li>N-gram 분석기를 추가 적용해 이모지·특수문자가 포함된 검색어도 처리 가능하도록 개선</li>
           <li>형태소 분석기와 N-gram을 함께 사용해 일반 텍스트와 특수문자 케이스를 모두 커버</li>
@@ -815,7 +802,6 @@ footer {
           <li>공지·FAQ 관리 – 다국어 공지 등록 및 노출 제어</li>
           <li>JSON 기반 앱 설정 관리 – 점검 모드, 강제 업데이트 등 앱 동작 원격 제어</li>
         </ul>
-        <p style="margin-top:10px; font-size:12px; color:var(--text3); font-family:var(--mono)">Vue.js · Express · MySQL</p>
       </div>
 
       <!-- Slack Bot -->
@@ -828,15 +814,12 @@ footer {
 
         <div class="feature-title" style="margin-top:4px">운영 알림</div>
         <ul class="feature-list">
-          <li>구독 알림 – 신규 구독 발생 시 실시간 슬랙 알림</li>
-          <li>콘텐츠 신고 알림 – 신고 접수 시 즉시 운영팀에 전달</li>
-          <li>콘텐츠 작성 알림 – 새 콘텐츠 등록 시 담당자 알림</li>
-          <li>유저 신고 알림 – 유저 간 신고 발생 시 운영팀 즉시 인지</li>
+          <li>구독, 콘텐츠 신고/작성, 유저 신고 등 주요 운영 이벤트를 슬랙으로 실시간 수신</li>
         </ul>
 
         <div class="feature-title" style="margin-top:12px">CS 자동화</div>
         <ul class="feature-list">
-          <li>고객 문의 접수 시 슬랙 채널에 자동 알림 (문의자 정보·내용·첨부파일 포함)</li>
+          <li>고객 문의 접수 시 슬랙 채널에 자동 알림</li>
           <li>운영자가 해당 스레드에 <span style="font-family:var(--mono);color:var(--accent2);font-size:12px">답변: xxx</span> 형식으로 입력하면 봇이 감지</li>
           <li>한국어/영어 선택 후 문의자 이메일로 답변 자동 발송</li>
         </ul>
@@ -857,10 +840,11 @@ footer {
       <div class="stack-group">
         <div class="stack-group-label">Backend</div>
         <div class="stack-items">
-          <div class="stack-item">Node.js</div>
           <div class="stack-item">NestJS</div>
+          <div class="stack-item">Node.js</div>
           <div class="stack-item">TypeScript</div>
           <div class="stack-item">Fastify</div>
+          <div class="stack-item">Express.js</div>
         </div>
       </div>
       <div class="stack-group">
@@ -868,15 +852,15 @@ footer {
         <div class="stack-items">
           <div class="stack-item">MySQL</div>
           <div class="stack-item">PostgreSQL</div>
-          <div class="stack-item">Redis Cluster</div>
-          <div class="stack-item">AWS SQS</div>
+          <div class="stack-item">Redis</div>
         </div>
       </div>
       <div class="stack-group">
         <div class="stack-group-label">Infra / DevOps</div>
         <div class="stack-items">
-          <div class="stack-item">AWS (EKS, Lambda, CloudFront, SQS)</div>
-          <div class="stack-item">Kubernetes</div>
+          <div class="stack-item">AWS (EKS, Lambda, CloudFront,</div>
+          <div class="stack-item">SQS, RDS, ElastiCache, S3, OpenSearch)</div>
+          <div class="stack-item">Kubernetes / Docker</div>
           <div class="stack-item">Terraform</div>
           <div class="stack-item">Argo CD</div>
         </div>
@@ -887,7 +871,20 @@ footer {
           <div class="stack-item">Grafana / Loki</div>
           <div class="stack-item">Sentry</div>
           <div class="stack-item">BotKube</div>
-          <div class="stack-item">OpenSearch</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Frontend</div>
+        <div class="stack-items">
+          <div class="stack-item">Vue.js</div>
+          <div class="stack-item">jQuery</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Tools</div>
+        <div class="stack-items">
+          <div class="stack-item">Git</div>
+          <div class="stack-item">GitHub Actions</div>
         </div>
       </div>
     </div>
