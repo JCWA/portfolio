@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend Engineer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #0f0f1a;
+  --bg3: #141428;
+  --surface: #1a1a2e;
+  --border: #2a2a4a;
+  --accent: #6366f1;
+  --accent2: #818cf8;
+  --accent3: #c7d2fe;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --mono: 'Space Mono', monospace;
+  --sans: 'Noto Sans KR', sans-serif;
+  --glow: 0 0 40px rgba(99,102,241,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Nav */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent2);
+  letter-spacing: 0.05em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text3);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--accent2); }
+
+/* Main layout */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 48px;
+}
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 100%;
+  padding: 120px 48px 80px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero-title {
+  font-size: clamp(42px, 7vw, 80px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.hero-title .highlight {
+  color: var(--accent2);
+  position: relative;
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 560px;
+  line-height: 1.8;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.6s;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-value {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+}
+
+.hero-glow {
+  position: absolute;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Section headers */
+.section-header {
+  margin-bottom: 48px;
+}
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Capabilities */
+.caps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cap-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cap-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cap-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.cap-card:hover::before { opacity: 1; }
+
+.cap-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.cap-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.cap-desc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+/* Project section */
+.project-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.project-info { flex: 1; }
+
+.project-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.project-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 500px;
+}
+
+.project-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.metric {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.metric-value {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent2);
+  display: block;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* Feature blocks */
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.feature {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  transition: border-color 0.2s;
+}
+
+.feature:hover { border-color: rgba(99,102,241,0.4); }
+
+.feature-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.feature-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.feature-tag.trouble {
+  color: #f59e0b;
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.3);
+}
+
+.feature-body {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feature-list li {
+  font-size: 13px;
+  color: var(--text2);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.7;
+}
+
+.feature-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  top: 2px;
+}
+
+.trouble-box {
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  color: #fbbf24;
+  line-height: 1.6;
+}
+
+/* MSA table */
+.msa-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.msa-table th {
+  background: rgba(99,102,241,0.15);
+  color: var(--accent3);
+  font-weight: 700;
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.msa-table td {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+
+.msa-table tr:hover td { background: rgba(99,102,241,0.05); }
+
+.msa-table td:first-child {
+  font-family: var(--mono);
+  color: var(--accent2);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* Tech stack */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.stack-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.stack-group-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.stack-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stack-item {
+  font-size: 12.5px;
+  color: var(--text2);
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.stack-item:last-child { border-bottom: none; }
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 48px;
+  border-top: 1px solid var(--border);
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 48px;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 24px 60px; }
+  section { padding: 60px 24px; }
+  .hero-stats { flex-wrap: wrap; gap: 24px; }
+  .caps-grid { grid-template-columns: 1fr; }
+  .project-header { flex-direction: column; }
+  .project-metrics { grid-template-columns: repeat(4, 1fr); }
+  .stack-grid { grid-template-columns: 1fr 1fr; }
+  .divider { margin: 0 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">// backend.engineer</div>
+  <ul class="nav-links">
+    <li><a href="#capabilities">역량</a></li>
+    <li><a href="#project">프로젝트</a></li>
+    <li><a href="#stack">기술스택</a></li>
+  </ul>
+</nav>
+
+<main>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">// 12년차 백엔드 엔지니어</p>
+    <h1 class="hero-title">
+      K-POP 팬덤 플랫폼을<br>
+      <span class="highlight">설계하고 운영했습니다</span>
+    </h1>
+    <p class="hero-desc">
+      글로벌 팬덤 서비스를 초기부터 기획·개발·운영하며 트래픽 변동성이 큰 환경에서
+      안정적인 시스템을 구축해왔습니다. 팬 경험을 기준으로 제품을 설계하고,
+      실제 운영까지 책임지며 완성도를 높이는 엔지니어입니다.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-value">400만</span>
+        <span class="stat-label">누적 다운로드</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">40만</span>
+        <span class="stat-label">MAU</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">200K</span>
+        <span class="stat-label">RPM 피크 대응</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">12년</span>
+        <span class="stat-label">백엔드 경력</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Capabilities -->
+  <section id="capabilities">
+    <div class="section-header fade-in">
+      <p class="section-eyebrow">// core capabilities</p>
+      <h2 class="section-title">핵심 역량</h2>
+    </div>
+    <div class="caps-grid">
+      <div class="cap-card fade-in">
+        <div class="cap-icon">⚡</div>
+        <div class="cap-title">트래픽 변동성이 큰 환경의 아키텍처</div>
+        <div class="cap-desc">이벤트성 트래픽 최대 200K RPM 환경에서 안정적인 서비스를 유지하는 시스템을 설계하고 운영했습니다.</div>
+      </div>
+      <div class="cap-card fade-in">
+        <div class="cap-icon">🌏</div>
+        <div class="cap-title">글로벌 서비스 경험</div>
+        <div class="cap-desc">한/영/일 다국어 콘텐츠 서빙, ISO 8601 기반 타임존 표준화로 글로벌 다수 국가 대상 서비스를 운영했습니다.</div>
+      </div>
+      <div class="cap-card fade-in">
+        <div class="cap-icon">🔧</div>
+        <div class="cap-title">인프라 자동화 및 관측 체계</div>
+        <div class="cap-desc">AWS EKS, Terraform, Argo CD 기반 GitOps 배포 체계를 구축하고 Grafana/Loki/Sentry로 이슈를 빠르게 감지·대응하는 운영 흐름을 만들었습니다.</div>
+      </div>
+      <div class="cap-card fade-in">
+        <div class="cap-icon">🤖</div>
+        <div class="cap-title">AI/LLM 연동 경험</div>
+        <div class="cap-desc">OpenAI API를 활용한 뉴스 키워드 추출 배치 파이프라인을 설계·구현했습니다. 한/영/일 다국어 키워드·요약을 동시 생성하는 시스템을 구축했습니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Project -->
+  <section id="project">
+    <div class="section-header fade-in">
+      <p class="section-eyebrow">// main project</p>
+      <h2 class="section-title">Blip – K-POP 팬덤 플랫폼</h2>
+    </div>
+
+    <div class="project-header fade-in">
+      <div class="project-info">
+        <h3 class="project-name">Blip</h3>
+        <p class="project-desc">관심 아티스트 팔로우 기반으로 공식·비공식 스케줄, 콘텐츠, SNS 및 차트 정보를 통합 제공하고 팬로그로 기록하는 글로벌 팬덤 앱. 서비스 초기부터 참여하여 백엔드/인프라 전반을 담당했습니다.</p>
+      </div>
+      <div class="project-metrics">
+        <div class="metric">
+          <span class="metric-value">400만</span>
+          <div class="metric-label">다운로드</div>
+        </div>
+        <div class="metric">
+          <span class="metric-value">40만</span>
+          <div class="metric-label">MAU</div>
+        </div>
+        <div class="metric">
+          <span class="metric-value">4-5만</span>
+          <div class="metric-label">DAU</div>
+        </div>
+        <div class="metric">
+          <span class="metric-value">200K</span>
+          <div class="metric-label">RPM 피크</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+
+      <!-- MSA -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          마이크로서비스 아키텍처
+          <span class="feature-tag">ARCHITECTURE</span>
+        </div>
+        <p class="feature-body">초기 Express 기반 모놀리식 구조에서 서비스 성장에 따라 세 가지 문제가 드러났습니다. 알림 발송 등 무거운 배치 작업이 API 응답을 저하시키고, 작은 수정도 전체 재배포가 필요했으며, 코드 구조가 개발자마다 달라 협업 비용이 증가했습니다. 부하가 큰 기능부터 분리하고 NestJS 기반으로 점진적 전환했습니다.</p>
+        <table class="msa-table">
+          <tr><th>SERVICE</th><th>역할</th><th>분리 이유</th></tr>
+          <tr><td>API</td><td>외부 사용자 트래픽, 핵심 비즈니스 로직</td><td>핵심 응답 흐름 보호</td></tr>
+          <tr><td>Internal API</td><td>서비스 간 내부 통신, 배치 트리거</td><td>내외부 트래픽 분리</td></tr>
+          <tr><td>Consumer</td><td>SQS 기반 비동기 작업 처리</td><td>알림 발송 부하 분산</td></tr>
+          <tr><td>Chat</td><td>WebSocket 기반 실시간 채팅</td><td>독립 스케일링</td></tr>
+          <tr><td>CMS</td><td>운영자용 관리 도구</td><td>독립 배포, 장애 격리</td></tr>
+        </table>
+        <ul class="feature-list">
+          <li>배포 독립성 확보로 배포 빈도 증가</li>
+          <li>서비스별 독립 스케일링 가능</li>
+          <li>한 서비스 장애가 다른 서비스로 전파되지 않는 격리 구조 확보</li>
+        </ul>
+      </div>
+
+      <!-- Traffic -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          이벤트 트래픽 대응
+          <span class="feature-tag">PERFORMANCE</span>
+        </div>
+        <p class="feature-body">K-POP 컴백·콘서트·방송 등 이벤트 시 트래픽이 급격히 증가하는 특성에 맞춰 처리 흐름을 설계했습니다.</p>
+        <ul class="feature-list">
+          <li>SQS 기반 비동기 파이프라인 구축으로 API와 후속 작업을 분리, 트래픽 집중 시에도 핵심 응답 흐름 보호</li>
+          <li>Consumer가 후속 작업을 독립적으로 처리해 부하 분산</li>
+          <li>AWS EKS + HPA 구성으로 트래픽 급증 시 자동 스케일아웃 대응</li>
+        </ul>
+        <div class="feature-title" style="margin-top:16px">
+          🔧 트러블슈팅 – 블루그린 배포 시 IP pool 고갈
+          <span class="feature-tag trouble">TROUBLESHOOTING</span>
+        </div>
+        <div class="trouble-box">이벤트 대응을 위해 블루그린 배포를 진행하던 중, 신규 Pod가 대량으로 뜨면서 VPC 서브넷의 IP가 고갈되어 Pod 생성이 실패하는 문제가 발생했습니다.</div>
+        <ul class="feature-list">
+          <li>원인: 블루그린 방식 특성상 기존/신규 Pod 동시 존재 구간에서 IP 사용량 2배 증가, 서브넷 IP pool 한계 초과</li>
+          <li>대응: 사용하지 않는 네임스페이스 Pod 정리 및 서브넷 CIDR 범위 확장으로 IP pool 확보</li>
+          <li>재발 방지: 블루그린 배포 전 IP 사용량 사전 점검 프로세스 추가, 여유 IP 모니터링 알림 설정</li>
+        </ul>
+      </div>
+
+      <!-- Global -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          글로벌 서비스
+          <span class="feature-tag">GLOBAL</span>
+        </div>
+        <p class="feature-body">K-POP 팬덤 특성상 사용자가 전 세계에 분포해 초기부터 글로벌 서비스를 전제로 설계했습니다.</p>
+        <ul class="feature-list">
+          <li>다국어: JSON 기반 번역 파일 관리, Accept-Language 헤더 기반 동적 언어 서빙 (한/영/일, 그 외 영어 폴백)</li>
+          <li>타임존: API 응답을 ISO 8601 UTC 기준으로 통일, 클라이언트에서 로컬 타임존 변환 처리</li>
+          <li>글로벌 다수 국가 서비스 운영</li>
+        </ul>
+      </div>
+
+      <!-- Chat -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          실시간 채팅 (WebSocket)
+          <span class="feature-tag">REALTIME</span>
+        </div>
+        <p class="feature-body">팬들이 이벤트·컴백 순간에 실시간으로 소통할 수 있는 채팅 기능을 별도 마이크로서비스로 분리해 설계·구현했습니다.</p>
+        <ul class="feature-list">
+          <li>1:1 채팅, 그룹 채팅, 불특정 다수가 참여하는 오픈 채팅방 지원</li>
+          <li>Redis에 소켓 키를 저장해 다중 인스턴스 환경에서도 연결 상태를 일관성 있게 관리</li>
+          <li>채팅 서버를 독립 서비스로 분리해 메인 API와 장애 격리 및 독립적 스케일링 확보</li>
+        </ul>
+        <div class="feature-title" style="margin-top:16px">
+          🔧 트러블슈팅 – 배포 시 소켓 이전
+          <span class="feature-tag trouble">TROUBLESHOOTING</span>
+        </div>
+        <div class="trouble-box">배포 시 기존 소켓 연결을 새 서버로 자연스럽게 이전하는 방법이 필요했습니다.</div>
+        <ul class="feature-list">
+          <li>배포 전 모든 소켓에 연결 종료 신호 전송</li>
+          <li>클라이언트 재연결 시도 시 새로 뜬 서버에 자동 연결</li>
+          <li>사용자 입장에서는 잠깐의 재연결만 발생하고 채팅방 상태 유지</li>
+        </ul>
+      </div>
+
+      <!-- Search -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          검색 및 추천 (OpenSearch)
+          <span class="feature-tag">SEARCH</span>
+        </div>
+        <p class="feature-body">팬들이 원하는 콘텐츠를 빠르게 찾고 자연스럽게 소비 흐름이 이어지도록 검색과 추천 기능을 구축했습니다.</p>
+        <ul class="feature-list">
+          <li>OpenSearch 기반 검색 구성, 은전한닢(mecab) 한국어 형태소 분석기 적용으로 한국어 검색 품질 향상</li>
+          <li>좋아요 수, 댓글 수, 팔로우 유저 행동 데이터 기반 스코어링 방식 콘텐츠 추천 구현</li>
+          <li>인덱싱/조회 성능을 고려한 운영 구조 설계</li>
+        </ul>
+        <div class="feature-title" style="margin-top:16px">
+          🔧 트러블슈팅 – 이모지·특수문자 검색 누락
+          <span class="feature-tag trouble">TROUBLESHOOTING</span>
+        </div>
+        <div class="trouble-box">K-POP 특성상 아티스트명에 이모지·특수문자가 포함된 경우가 많은데, 형태소 분석기만으로는 토크나이징이 되지 않아 검색 결과가 누락되는 문제가 발생했습니다.</div>
+        <ul class="feature-list">
+          <li>N-gram 분석기를 추가 적용해 이모지·특수문자가 포함된 검색어도 처리 가능하도록 개선</li>
+          <li>형태소 분석기와 N-gram을 함께 사용해 일반 텍스트와 특수문자 케이스를 모두 커버</li>
+        </ul>
+      </div>
+
+      <!-- LLM -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          AI/LLM 연동 (뉴스 키워드 추출)
+          <span class="feature-tag">AI</span>
+        </div>
+        <p class="feature-body">아티스트별로 매일 대량의 뉴스 기사가 쏟아지는데, 팬들이 핵심 소식을 빠르게 파악할 수 있도록 키워드와 요약을 자동으로 제공하는 기능을 구축했습니다.</p>
+        <ul class="feature-list">
+          <li>수집된 기사를 OpenAI API에 전달해 아티스트별 핵심 키워드와 한/영/일 다국어 요약을 동시 생성하는 배치 파이프라인 설계</li>
+          <li>JSON Schema 기반 Structured Output으로 응답 형식을 강제해 파싱 오류 방지</li>
+          <li>처리 결과를 DB에 저장해 아티스트별 키워드 랭킹 순으로 서비스에 노출</li>
+        </ul>
+        <div class="feature-title" style="margin-top:16px">
+          🔧 트러블슈팅 – 토큰 초과 및 중복 키워드
+          <span class="feature-tag trouble">TROUBLESHOOTING</span>
+        </div>
+        <ul class="feature-list">
+          <li>토큰 초과: 하루치 기사를 한 번에 전달하면 컨텍스트 윈도우 초과 오류 → 더 큰 컨텍스트 윈도우 모델로 교체 해결</li>
+          <li>중복 키워드: 6시간 배치 운영 시 유사 기사 반복 수집으로 키워드 중복 생성 → 배치 주기 24시간으로 조정해 해소</li>
+        </ul>
+      </div>
+
+      <!-- Monitoring -->
+      <div class="feature fade-in">
+        <div class="feature-title">
+          모니터링 및 운영 체계
+          <span class="feature-tag">DEVOPS</span>
+        </div>
+        <p class="feature-body">이벤트 순간에도 서비스를 믿고 쓸 수 있도록 배포 신뢰도와 운영 관측 체계를 구축했습니다. 초기에는 장애를 사용자 제보로 뒤늦게 인지하는 경우가 있어 선제적 감지 체계가 필요했습니다.</p>
+        <ul class="feature-list">
+          <li>Grafana/Loki 기반으로 모든 서비스 로그를 중앙에서 통합 조회</li>
+          <li>Sentry로 에러 수집 및 알림, Slack 실시간 알림 연동으로 이슈 즉시 인지</li>
+          <li>BotKube로 Kubernetes 이벤트(Pod 재시작, OOM 등) Slack 알림 연동</li>
+          <li>Argo CD 기반 GitOps 배포 체계로 배포 프로세스 표준화 및 변경 이력 추적</li>
+          <li>블루그린 배포 방식으로 문제 발생 시 즉시 롤백 가능한 구조 확보</li>
+          <li>이슈 발생 시 재현 → 원인 파악 → 대응 → 재발 방지까지 이어지는 운영 흐름 정착</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Stack -->
+  <section id="stack">
+    <div class="section-header fade-in">
+      <p class="section-eyebrow">// tech stack</p>
+      <h2 class="section-title">기술 스택</h2>
+    </div>
+    <div class="stack-grid fade-in">
+      <div class="stack-group">
+        <div class="stack-group-label">Backend</div>
+        <div class="stack-items">
+          <div class="stack-item">Node.js</div>
+          <div class="stack-item">NestJS</div>
+          <div class="stack-item">TypeScript</div>
+          <div class="stack-item">Fastify</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Database</div>
+        <div class="stack-items">
+          <div class="stack-item">PostgreSQL</div>
+          <div class="stack-item">MySQL</div>
+          <div class="stack-item">Redis Cluster</div>
+          <div class="stack-item">AWS SQS</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Infra / DevOps</div>
+        <div class="stack-items">
+          <div class="stack-item">AWS EKS</div>
+          <div class="stack-item">Kubernetes</div>
+          <div class="stack-item">Terraform</div>
+          <div class="stack-item">Argo CD</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Observability</div>
+        <div class="stack-items">
+          <div class="stack-item">Grafana / Loki</div>
+          <div class="stack-item">Sentry</div>
+          <div class="stack-item">BotKube</div>
+          <div class="stack-item">OpenSearch</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>// Backend Engineer · K-POP Fandom Platform Specialist</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
