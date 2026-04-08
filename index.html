@@ -537,6 +537,7 @@ footer {
   <ul class="nav-links">
     <li><a href="#capabilities">역량</a></li>
     <li><a href="#project">프로젝트</a></li>
+    <li><a href="#side-project">사이드</a></li>
     <li><a href="#stack">기술스택</a></li>
   </ul>
 </nav>
@@ -598,7 +599,7 @@ footer {
 
     <div class="project-header fade-in">
       <div class="project-info">
-        <h3 class="project-name">Blip</h3>
+        <h3 class="project-name">Blip (<a href="https://blip.kr" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">blip.kr</a>)</h3>
         <p class="project-desc">관심 아티스트 팔로우 기반으로 공식·비공식 스케줄, 콘텐츠, SNS 및 차트 정보를 통합 제공하고 팬로그로 기록하는 글로벌 팬덤 앱. 서비스 초기부터 참여하여 백엔드/인프라 전반을 담당했습니다.</p>
       </div>
       <div class="project-metrics">
@@ -823,6 +824,53 @@ footer {
           <li>운영자가 해당 스레드에 <span style="font-family:var(--mono);color:var(--accent2);font-size:12px">답변: xxx</span> 형식으로 입력하면 봇이 감지</li>
           <li>한국어/영어 선택 후 문의자 이메일로 답변 자동 발송</li>
         </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Side Project -->
+  <section id="side-project">
+    <div class="section-header fade-in">
+      <p class="section-eyebrow">// side project</p>
+      <h2 class="section-title">AI 의약품 식별 챗봇</h2>
+    </div>
+
+    <div class="project-header fade-in">
+      <div class="project-info">
+        <h3 class="project-name">MediSearch (<a href="https://chat-bot-web.vercel.app" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">chat-bot-web.vercel.app</a>)</h3>
+        <p class="project-desc">약의 외관이나 이름을 자연어로 입력하면 해당 의약품을 찾아주는 RAG 챗봇. 공공데이터포털 25,000+건 데이터를 벡터 임베딩하고, LLM과 결합해 자연어 검색을 구현했습니다. Claude Code를 활용한 바이브 코딩으로 개발했습니다.</p>
+      </div>
+      <div class="project-metrics">
+        <div class="metric">
+          <span class="metric-value">25,000+</span>
+          <div class="metric-label">의약품 DB</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+
+      <div class="feature fade-in">
+        <div class="feature-title">
+          구조
+          <span class="feature-tag">ARCHITECTURE</span>
+        </div>
+        <ul class="feature-list">
+          <li>NestJS + Socket.io 백엔드, Next.js 프론트, Supabase pgvector, Groq LLM API</li>
+          <li>공공데이터포털 API 2종(낱알식별 + e약은요)에서 외관·효능 데이터 수집 → HuggingFace로 벡터 임베딩 → Supabase 저장</li>
+          <li>검색 결과를 LLM 프롬프트에 주입(RAG)하여 데이터 기반으로만 답변하도록 제한</li>
+        </ul>
+      </div>
+
+      <div class="feature fade-in">
+        <div class="feature-title">
+          하이브리드 검색
+          <span class="feature-tag">SEARCH</span>
+        </div>
+        <p class="feature-body">약 이름 검색, 외관 조건 AND 필터(PostgreSQL RPC), 약효·효능 텍스트 검색, pgvector 시맨틱 검색을 우선순위별로 조합. Supabase 클라이언트의 OR 체이닝 한계를 RPC 함수로 해결했습니다.</p>
       </div>
 
     </div>
